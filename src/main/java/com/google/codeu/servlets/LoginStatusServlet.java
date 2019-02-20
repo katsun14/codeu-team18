@@ -39,6 +39,7 @@ public class LoginStatusServlet extends HttpServlet {
 
     UserService userService = UserServiceFactory.getUserService();
     if (userService.isUserLoggedIn()) {
+
       jsonObject.addProperty("isLoggedIn", true);
       jsonObject.addProperty("username", userService.getCurrentUser().getEmail());
     } else {
