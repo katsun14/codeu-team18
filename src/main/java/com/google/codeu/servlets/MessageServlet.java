@@ -42,8 +42,8 @@ public class MessageServlet extends HttpServlet {
   }
 
   /**
-   * Responds with a JSON representation of {@link Message} data for a specific user. Responds with
-   * an empty array if the user is not provided.
+   * Responds with a JSON representation of {@link Message} data for a specific
+   * user. Responds with an empty array if the user is not provided.
    */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -54,6 +54,7 @@ public class MessageServlet extends HttpServlet {
 
     if (user == null || user.equals("")) {
       // Request is invalid, return empty array
+
       response.getWriter().println("[]");
       return;
     }
