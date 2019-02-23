@@ -43,6 +43,7 @@ public class Datastore {
     messageEntity.setProperty("user", message.getUser());
     messageEntity.setProperty("text", message.getText());
     messageEntity.setProperty("timestamp", message.getTimestamp());
+    messageEntity.setProperty("recipient", message.getRecipient());
 
     datastore.put(messageEntity);
   }
@@ -60,8 +61,9 @@ public class Datastore {
         String user = (String) entity.getProperty("user");
         String text = (String) entity.getProperty("text");
         long timestamp = (long) entity.getProperty("timestamp");
+        String recipient = (String) entity.getProperty("recipient");
 
-        Message message = new Message(id, user, text, timestamp);
+        Message message = new Message(id, user, text, timestamp, recipient);
         messages.add(message);
       } catch (Exception e) {
         System.err.println("Error reading message.");
