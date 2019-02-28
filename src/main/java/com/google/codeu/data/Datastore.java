@@ -109,4 +109,37 @@ public class Datastore {
     return results.countEntities(FetchOptions.Builder.withLimit(1000));
   }
 
+  /** Returns the average length of all messages. */
+  public int getAverageMessageLength() {
+    Query query = new Query("Message");
+    PreparedQuery results = datastore.prepare(query);
+
+    int sum = 0;
+
+    for (Entity entity : results.asIterable()) {
+      sum = sum + ((String) entity.getProperty("text")).length();
+    }
+
+    return sum / getTotalMessageCount();
+
+  }
+
+  /**
+   * Returns the maximum length of all the messages. Returns -1 if there are no
+   * messages.
+   */
+  public int getMaxMessageLength() {
+    Query query = new Query("Message");
+    PreparedQuery results = datastore.prepare(query);
+
+    int max = -1;
+
+    for (Entity entity : results.asIterable()) {
+      max = Math.max(max, ((String) entity.getProperty("text")).length());
+    }
+
+    return max;
+
+  }
+
 }
