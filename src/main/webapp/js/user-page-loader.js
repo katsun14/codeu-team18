@@ -17,6 +17,7 @@
 // Get ?user=XYZ parameter value
 const urlParams = new URLSearchParams(window.location.search);
 const parameterUsername = urlParams.get('user');
+const maxMessages = 5;
 
 // URL must include ?user=XYZ parameter. If not, redirect to homepage.
 if (!parameterUsername) {
@@ -63,13 +64,42 @@ function fetchMessages() {
         } else {
           messagesContainer.innerHTML = '';
         }
+
+
+        var count = 0;
+
         messages.forEach((message) => {
           const messageDiv = buildMessageDiv(message);
+
+          if (count !== maxMessages) {
+          	count++;
+          } else {
+          	messageDiv.hidden = true;
+          }
+
           messagesContainer.appendChild(messageDiv);
         });
+
       });
 }
 
+
+
+function showAll() {
+	var messages = document.getElementsByClassName("message-div");
+	for (var index=maxMessages; index < messages.length; index++) {
+		messages[index].hidden = false;
+	}
+}
+
+
+
+function hideMessages() {
+	var messages = document.getElementsByClassName("message-div");
+	for (var index=maxMessages; index < messages.length; index++) {
+		messages[index].hidden = true;
+	}
+}
 /**
  * Builds an element that displays the message.
  * @param {Message} message
@@ -78,8 +108,12 @@ function fetchMessages() {
 function buildMessageDiv(message) {
   const headerDiv = document.createElement('div');
   headerDiv.classList.add('message-header');
-  headerDiv.appendChild(document.createTextNode(
-      message.user + ' - ' + new Date(message.timestamp)));
+
+  var messageHeader = 'From: ' + message.user +
+  					' To: ' + message.recipient +
+  					' - ' + new Date(message.timestamp);
+
+  headerDiv.appendChild(document.createTextNode(messageHeader));
 
   const bodyDiv = document.createElement('div');
   bodyDiv.classList.add('message-body');
