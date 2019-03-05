@@ -32,6 +32,11 @@ import com.google.appengine.api.datastore.FetchOptions;
 public class Datastore {
 
   private DatastoreService datastore;
+  private String messageColumn = "Message";
+  private String textColumn = "text";
+  private String userColumn = "user";
+  private String timestampColumn = "timestamp";
+  private String recipientColumn = "recipient";
 
   public Datastore() {
     datastore = DatastoreServiceFactory.getDatastoreService();
@@ -39,11 +44,11 @@ public class Datastore {
 
   /** Stores the Message in Datastore. */
   public void storeMessage(Message message) {
-    Entity messageEntity = new Entity("Message", message.getId().toString());
-    messageEntity.setProperty("user", message.getUser());
-    messageEntity.setProperty("text", message.getText());
-    messageEntity.setProperty("timestamp", message.getTimestamp());
-    messageEntity.setProperty("recipient", message.getRecipient());
+    Entity messageEntity = new Entity(messageColumn, message.getId().toString());
+    messageEntity.setProperty(userColumn, message.getUser());
+    messageEntity.setProperty(textColumn, message.getText());
+    messageEntity.setProperty(timestampColumn, message.getTimestamp());
+    messageEntity.setProperty(recipientColumn, message.getRecipient());
 
     datastore.put(messageEntity);
   }
@@ -58,10 +63,10 @@ public class Datastore {
       try {
         String idString = entity.getKey().getName();
         UUID id = UUID.fromString(idString);
-        String user = (String) entity.getProperty("user");
-        String text = (String) entity.getProperty("text");
-        long timestamp = (long) entity.getProperty("timestamp");
-        String recipient = (String) entity.getProperty("recipient");
+        String user = (String) entity.getProperty(userColumn);
+        String text = (String) entity.getProperty(textColumn);
+        long timestamp = (long) entity.getProperty(timestampColumn);
+        String recipient = (String) entity.getProperty(recipientColumn);
 
         Message message = new Message(id, user, text, timestamp, recipient);
         messages.add(message);
@@ -83,7 +88,7 @@ public class Datastore {
    */
   public List<Message> getAllMessages() {
 
-    Query query = new Query("Message").addSort("timestamp", SortDirection.DESCENDING);
+    Query query = new Query(messageColumn).addSort(timestampColumn, SortDirection.DESCENDING);
 
     return answerQuery(query);
   }
@@ -96,17 +101,50 @@ public class Datastore {
    */
   public List<Message> getMessages(String user) {
 
-    Query query = new Query("Message").setFilter(new Query.FilterPredicate("user", FilterOperator.EQUAL, user))
-        .addSort("timestamp", SortDirection.DESCENDING);
+    Query query = new Query(messageColumn).setFilter(new Query.FilterPredicate(userColumn, FilterOperator.EQUAL, user))
+        .addSort(timestampColumn, SortDirection.DESCENDING);
 
     return answerQuery(query);
   }
 
   /** Returns the total number of messages for all users. */
   public int getTotalMessageCount() {
-    Query query = new Query("Message");
+    Query query = new Query(messageColumn);
     PreparedQuery results = datastore.prepare(query);
     return results.countEntities(FetchOptions.Builder.withLimit(1000));
+  }
+
+  /** Returns the average length of all messages. */
+  public int getAverageMessageLength() {
+    Query query = new Query(messageColumn);
+    PreparedQuery results = datastore.prepare(query);
+
+    int sum = 0;
+
+    for (Entity entity : results.asIterable()) {
+      sum = sum + ((String) entity.getProperty(textColumn)).length();
+    }
+
+    return sum / getTotalMessageCount();
+
+  }
+
+  /**
+   * Returns the maximum length of all the messages. Returns -1 if there are no
+   * messages.
+   */
+  public int getMaxMessageLength() {
+    Query query = new Query(messageColumn);
+    PreparedQuery results = datastore.prepare(query);
+
+    int max = -1;
+
+    for (Entity entity : results.asIterable()) {
+      max = Math.max(max, ((String) entity.getProperty(textColumn)).length());
+    }
+
+    return max;
+
   }
 
 }
