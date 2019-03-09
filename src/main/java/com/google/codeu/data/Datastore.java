@@ -101,9 +101,8 @@ public class Datastore {
    */
   public List<Message> getMessages(String recipient) {
 
-    Query query = new Query(messageColumn).setFilter(new Query.FilterPredicate(userColumn, FilterOperator.EQUAL, user))
-        .addSort(timestampColumn, SortDirection.DESCENDING);
-    Query query = new Query(messageColumn).setFilter(new Query.FilterPredicate(recipientColumn FilterOperator.EQUAL, recipient))
+    Query query = new Query(messageColumn)
+        .setFilter(new Query.FilterPredicate(recipientColumn, FilterOperator.EQUAL, recipient))
         .addSort(timestampColumn, SortDirection.DESCENDING);
 
     return answerQuery(query);
