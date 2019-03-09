@@ -29,6 +29,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
+import java.util.regex.*;
+import org.apache.commons.validator.routines.UrlValidator;
 
 /** Handles fetching and saving {@link Message} instances. */
 @WebServlet("/messages")
@@ -77,10 +79,30 @@ public class MessageServlet extends HttpServlet {
     }
 
     String user = userService.getCurrentUser().getEmail();
-    String text = Jsoup.clean(request.getParameter("text"), Whitelist.none());
+    String userText = Jsoup.clean(request.getParameter("text"), Whitelist.none());
     String recipient = request.getParameter("recipient");
 
-    Message message = new Message(user, text, recipient);
+    Pattern regex = Pattern.compile("(https?://\\S+\\.(png|jpg|gif|bmp|jpeg))");
+    Matcher m = regex.matcher(userText);
+    StringBuffer sb = new StringBuffer();
+    UrlValidator urlValidator = new UrlValidator();
+    while (m.find()) {
+      String text = m.group(0);
+      System.out.println("text = " + text);
+      if(urlValidator.isValid(text)){
+        System.out.println("valid!");
+        String replacement = "<img src=\"" + text + "\" />";
+        m.appendReplacement(sb, replacement);
+      }
+    }
+    m.appendTail(sb);
+    userText = sb.toString();
+
+    //String regex = "(https?://\\S+\\.(png|jpg|gif|bmp|jpeg))";
+    //String replacement = "<img src=\"$1\" />";
+    //userText = userText.replaceAll(regex, replacement);
+
+    Message message = new Message(user, userText, recipient);
     datastore.storeMessage(message);
 
     response.sendRedirect("/user-page.html?user=" + recipient);
