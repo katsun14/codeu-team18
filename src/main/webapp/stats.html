@@ -4,10 +4,18 @@
 <head>
   <title>Stats</title>
   <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/stats-page.css">
   <script src="/js/stats-loader.js"></script>
+  <script src="/js/navigation-loader.js"></script>
 </head>
 
-<body onload="buildUI()">
+<body onload="buildUI(); addLoginOrLogoutLinkToNavigation(); addBasicLinkNavigation('feed.html', 'Public Feed');">
+  <nav>
+    <ul id="navigation">
+      <li><a href="/">Home</a></li>
+    </ul>
+  </nav>
+
   <div id="content">
     <h1>Site Statistics</h1>
     <hr />

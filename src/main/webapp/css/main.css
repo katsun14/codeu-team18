@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-/* Prevent the page from becoming too wide. */
 body {
-  max-width: 600px;
+  background-color: white;
 }
 
 /* Remove bullet points from navigation bar. */
@@ -28,5 +27,26 @@ nav ul {
 /* Keep navigation menu on one line. */
 nav li {
   display: inline-block;
-  margin-right: 10px
+  margin-right: 10px;
+  
+}
+
+nav {
+  background-color: darkgoldenrod;
+  font-size: 12pt;
+  text-align: center;
+}
+
+h1 {
+  text-align: center;
+  font-family: "DIN Alternate";
+  font-size: 48pt;
+  color:black;
+}
+
+p {
+  font-family: "Helvetica";
+  font-size: 16pt;
+  text-align: center;
+  color: black;
 }

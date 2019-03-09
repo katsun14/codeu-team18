@@ -24,20 +24,21 @@
 /* Give each message a rounded border. */
 .message-div {
   border: thin solid black;
-  border-radius: 5px;
-  margin-top: 20px;
+  border-radius: 0;
+  margin-top: 30px;
 }
 
 /* Add a bottom border to the message header. */
 .message-header {
   border-bottom: thin solid black;
   padding: 5px;
+  background-color:goldenrod;
 }
 
 /* Give the message body a margin so the text
    isn't too close to the border. */
 .message-body {
-  margin: 5px;
+  margin: 10px;
 }
 
 /* Use this to hide certain elements like forms if the
