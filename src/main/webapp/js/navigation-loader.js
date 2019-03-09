@@ -26,22 +26,38 @@ function addLoginOrLogoutLinkToNavigation() {
   }
 
   fetch('/login-status')
-      .then((response) => {
-        return response.json();
-      })
-      .then((loginStatus) => {
-        if (loginStatus.isLoggedIn) {
-          navigationElement.appendChild(createListItem(createLink(
-              '/user-page.html?user=' + loginStatus.username, 'Your Page')));
+    .then((response) => {
+      return response.json();
+    })
+    .then((loginStatus) => {
+      if (loginStatus.isLoggedIn) {
+        navigationElement.appendChild(createListItem(createLink(
+          '/user-page.html?user=' + loginStatus.username, 'Your Page')));
 
-          navigationElement.appendChild(
-              createListItem(createLink('/logout', 'Logout')));
-        } else {
-          navigationElement.appendChild(
-              createListItem(createLink('/login', 'Login')));
-        }
-      });
+        navigationElement.appendChild(
+          createListItem(createLink('/logout', 'Logout')));
+      } else {
+        navigationElement.appendChild(
+          createListItem(createLink('/login', 'Login')));
+      }
+    });
 }
+
+
+/**
+ * Adds a basic link to the page, with id 'text' to page 'url'
+ */
+function addBasicLinkNavigation(url, text) {
+  const navigationElement = document.getElementById('navigation');
+  if (!navigationElement) {
+    console.warn('Navigation element not found!');
+    return;
+  }
+
+  navigationElement.appendChild(createListItem(createLink(url, text)));
+}
+
+
 
 /**
  * Creates an li element.
