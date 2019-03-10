@@ -1,0 +1,15 @@
+/* CSS styles for the stats-page */
+
+h1 {
+  text-align: center;
+  font-family: "DIN Alternate";
+  font-size: 36pt;
+  color:black;
+}
+
+#stats-container {
+  font-family: "Helvetica";
+  font-size: 14pt;
+  text-align: center;
+  color: black;
+}
