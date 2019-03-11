@@ -82,16 +82,23 @@ public class MessageServlet extends HttpServlet {
     String userText = Jsoup.clean(request.getParameter("text"), Whitelist.none());
     String recipient = request.getParameter("recipient");
 
-    Pattern regex = Pattern.compile("(https?://\\S+\\.(png|jpg|gif|bmp|jpeg))");
+    Pattern regex = Pattern.compile("(https?://\\S+\\.(png|jpg|gif|bmp|jpeg|mp4|webm|mp3|ogg|wav))");
     Matcher m = regex.matcher(userText);
     StringBuffer sb = new StringBuffer();
     UrlValidator urlValidator = new UrlValidator();
     while (m.find()) {
       String text = m.group(0);
-      System.out.println("text = " + text);
-      if(urlValidator.isValid(text)){
-        System.out.println("valid!");
+      if (urlValidator.isValid(text) && text.matches("(https?://\\S+\\.(png|jpg|gif|bmp|jpeg))")){
+        System.out.println("valid image");
         String replacement = "<img src=\"" + text + "\" />";
+        m.appendReplacement(sb, replacement);
+      } else if (urlValidator.isValid(text) && text.matches("(https?://\\S+\\.(mp4|webm))")){
+        System.out.println("valid video");
+        String replacement = "<video src=\"" + text + "\" width=\"400\" alt=\"Your browser does not support the video element.\" controls/>";
+        m.appendReplacement(sb, replacement);
+      } else if (urlValidator.isValid(text) && text.matches("(https?://\\S+\\.(mp3|ogg|wav))")){
+        System.out.println("valid audio");
+        String replacement = "<audio src=\"" + text + "\" alt=\"Your browser does not support the video element.\" controls/>";
         m.appendReplacement(sb, replacement);
       }
     }
