@@ -18,11 +18,26 @@
 const urlParams = new URLSearchParams(window.location.search);
 const parameterUsername = urlParams.get('user');
 const maxMessages = 5;
+//HashMap to map supported languages and their language codes
+var supportedLanguages = new Map();
 
 // URL must include ?user=XYZ parameter. If not, redirect to homepage.
 if (!parameterUsername) {
   window.location.replace('/');
 }
+
+
+/*
+* Set supported languages in hashmap
+*/
+function fillMap() {
+  supportedLanguages.set('en', 'English');
+  supportedLanguages.set('zh', 'Chinese');
+  supportedLanguages.set('hi', 'Hindi');
+  supportedLanguages.set('es', 'Spanish');
+  supportedLanguages.set('ar', 'Arabic');
+}
+
 
 /** Sets the page title based on the URL parameter username. */
 function setPageTitle() {
@@ -52,7 +67,14 @@ function showMessageFormIfViewingSelf() {
 
 /** Fetches messages and add them to the page. */
 function fetchMessages() {
-  const url = '/messages?user=' + parameterUsername;
+  const parameterLanguage = urlParams.get('language');
+  let url = '/messages?user=' + parameterUsername;
+
+  if (parameterLanguage && 
+    supportedLanguages.has(parameterLanguage)) {
+    url += '&language=' + parameterLanguage;
+  }
+
   fetch(url)
       .then((response) => {
         return response.json();
@@ -142,10 +164,30 @@ function fetchAboutMe(){
   });
 }
 
+
+/*
+* Creates links to make requests for translating messages
+*/
+function buildLanguageLinks() {
+  const userPageUrl = '/user-page.html?user=' + parameterUsername;
+  const languagesListElement  = document.getElementById('languages');
+
+  //Iterate through hash map
+  supportedLanguages.forEach(function(value, key) {
+    languagesListElement.appendChild(createListItem(createLink(
+       userPageUrl + '&language=' + key, value)));
+  });
+
+}
+
+
+
 /** Fetches data and populates the UI of the page. */
 function buildUI() {
   setPageTitle();
   showMessageFormIfViewingSelf();
+  fillMap();
   fetchMessages();
   fetchAboutMe();
+  buildLanguageLinks();
 }
