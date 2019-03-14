@@ -31,6 +31,11 @@ import org.jsoup.Jsoup;
 import org.jsoup.safety.Whitelist;
 import java.util.regex.*;
 import org.apache.commons.validator.routines.UrlValidator;
+import com.google.cloud.translate.Translate;
+import com.google.cloud.translate.Translate.TranslateOption;
+import com.google.cloud.translate.TranslateOptions;
+import com.google.cloud.translate.Translation;
+
 
 /** Handles fetching and saving {@link Message} instances. */
 @WebServlet("/messages")
@@ -53,6 +58,7 @@ public class MessageServlet extends HttpServlet {
     response.setContentType("application/json");
 
     String user = request.getParameter("user");
+    String targetLanguageCode = request.getParameter("language");
 
     if (user == null || user.equals("")) {
       // Request is invalid, return empty array
@@ -61,7 +67,13 @@ public class MessageServlet extends HttpServlet {
       return;
     }
 
+
     List<Message> messages = datastore.getMessages(user);
+
+    if (targetLanguageCode != null) {
+    	translateMessages(messages, targetLanguageCode);
+    }
+
     Gson gson = new Gson();
     String json = gson.toJson(messages);
 
@@ -114,4 +126,20 @@ public class MessageServlet extends HttpServlet {
 
     response.sendRedirect("/user-page.html?user=" + recipient);
   }
+
+
+  private void translateMessages(List<Message> messages, String targetLanguageCode) {
+	  Translate translate = TranslateOptions.getDefaultInstance().getService();
+
+	  for(Message message : messages) {
+	    String originalText = message.getText();
+
+	    Translation translation =
+	        translate.translate(originalText, TranslateOption.targetLanguage(targetLanguageCode));
+	    String translatedText = translation.getTranslatedText();
+	      
+	    message.setText(translatedText);
+	  }    
+	}
+
 }
