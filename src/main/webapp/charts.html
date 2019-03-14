@@ -4,11 +4,19 @@
 <head>
   <title>A New Chart</title>
   <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <link rel="stylesheet" href="/css/main.css">
   <script src="/js/charts-loader.js"></script>
+  <script src="/js/navigation-loader.js"></script>
 </head>
 
-<body>
-  <h1>Chart Project Test Update me</h1>
+<body onload="addLoginOrLogoutLinkToNavigation(); addBasicLinkNavigation('stats.html', 'Stats Page'); addBasicLinkNavigation('feed.html', 'Public Feed');">
+  <nav>
+    <ul id="navigation">
+      <li><a href="/">Home</a></li>
+    </ul>
+  </nav>
+
+  <h1>Charts</h1>
 
   <div id="medal_chart"></div>
 </body>

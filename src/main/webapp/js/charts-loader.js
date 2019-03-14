@@ -6,7 +6,7 @@ google.charts.setOnLoadCallback(drawChart);
 function drawChart() {
   var medal_data = new google.visualization.DataTable();
 
-  //define columns for the medal_data DataTable instance
+  //define columns for the book_data DataTable instance
   medal_data.addColumn('string', 'Country');
   medal_data.addColumn('number', 'Gold');
   medal_data.addColumn('number', 'Silver');
