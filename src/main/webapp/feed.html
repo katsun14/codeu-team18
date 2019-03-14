@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Message Feed</title>
   <link rel="stylesheet" href="/css/main.css">
@@ -8,7 +9,7 @@
   <script src="/js/navigation-loader.js"></script>
 </head>
 
-<body onload="buildUI(); addLoginOrLogoutLinkToNavigation(); addBasicLinkNavigation('stats.html', 'Stats Page');">
+<body onload="buildUI(); addLoginOrLogoutLinkToNavigation(); addBasicLinkNavigation('stats.html', 'Stats Page'); addBasicLinkNavigation('charts.html', 'Charts Page');">
   <nav>
     <ul id="navigation">
       <li><a href="/">Home</a></li>
@@ -17,8 +18,9 @@
 
   <div>
     <h1>Message Feed</h1>
-    <hr/>
+    <hr />
     <div id="message-container">Loading...</div>
   </div>
 </body>
+
 </html>
