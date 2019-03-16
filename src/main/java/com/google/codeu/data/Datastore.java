@@ -19,6 +19,7 @@ package com.google.codeu.data;
 import com.google.appengine.api.datastore.DatastoreService;
 import com.google.appengine.api.datastore.DatastoreServiceFactory;
 import com.google.appengine.api.datastore.Entity;
+import com.google.appengine.api.datastore.FetchOptions;
 import com.google.appengine.api.datastore.PreparedQuery;
 import com.google.appengine.api.datastore.Query;
 import com.google.appengine.api.datastore.Query.FilterOperator;
@@ -26,7 +27,6 @@ import com.google.appengine.api.datastore.Query.SortDirection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import com.google.appengine.api.datastore.FetchOptions;
 
 /** Provides access to the data stored in Datastore. */
 public class Datastore {
@@ -37,6 +37,7 @@ public class Datastore {
   private String userColumn = "user";
   private String timestampColumn = "timestamp";
   private String recipientColumn = "recipient";
+  private String sentimentScoreColumn = "sentimentScore";
 
   public Datastore() {
     datastore = DatastoreServiceFactory.getDatastoreService();
@@ -49,6 +50,7 @@ public class Datastore {
     messageEntity.setProperty(textColumn, message.getText());
     messageEntity.setProperty(timestampColumn, message.getTimestamp());
     messageEntity.setProperty(recipientColumn, message.getRecipient());
+    messageEntity.setProperty(sentimentScoreColumn, message.getSentimentScore());
 
     datastore.put(messageEntity);
   }
@@ -67,8 +69,12 @@ public class Datastore {
         String text = (String) entity.getProperty(textColumn);
         long timestamp = (long) entity.getProperty(timestampColumn);
         String recipient = (String) entity.getProperty(recipientColumn);
+        float sentimentScore =
+            entity.getProperty(sentimentScoreColumn) == null
+                ? (float) 0.0
+                : ((Double) entity.getProperty(sentimentScoreColumn)).floatValue();
 
-        Message message = new Message(id, user, text, timestamp, recipient);
+        Message message = new Message(id, user, text, timestamp, recipient, sentimentScore);
         messages.add(message);
       } catch (Exception e) {
         System.err.println("Error reading message.");
@@ -83,8 +89,8 @@ public class Datastore {
   /**
    * Gets messages posted by all users.
    *
-   * @return a list of messages posted by all users, or empty list if users have
-   *         never posted a message. List is sorted by time descending.
+   * @return a list of messages posted by all users, or empty list if users have never posted a
+   *     message. List is sorted by time descending.
    */
   public List<Message> getAllMessages() {
 
@@ -96,14 +102,15 @@ public class Datastore {
   /**
    * Gets messages posted by a specific user.
    *
-   * @return a list of messages posted by the user, or empty list if user has
-   *         never posted a message. List is sorted by time descending.
+   * @return a list of messages posted by the user, or empty list if user has never posted a
+   *     message. List is sorted by time descending.
    */
   public List<Message> getMessages(String recipient) {
 
-    Query query = new Query(messageColumn)
-        .setFilter(new Query.FilterPredicate(recipientColumn, FilterOperator.EQUAL, recipient))
-        .addSort(timestampColumn, SortDirection.DESCENDING);
+    Query query =
+        new Query(messageColumn)
+            .setFilter(new Query.FilterPredicate(recipientColumn, FilterOperator.EQUAL, recipient))
+            .addSort(timestampColumn, SortDirection.DESCENDING);
 
     return answerQuery(query);
   }
@@ -127,13 +134,9 @@ public class Datastore {
     }
 
     return sum / getTotalMessageCount();
-
   }
 
-  /**
-   * Returns the maximum length of all the messages. Returns -1 if there are no
-   * messages.
-   */
+  /** Returns the maximum length of all the messages. Returns -1 if there are no messages. */
   public int getMaxMessageLength() {
     Query query = new Query(messageColumn);
     PreparedQuery results = datastore.prepare(query);
@@ -145,7 +148,6 @@ public class Datastore {
     }
 
     return max;
-
   }
 
   /** Stores the User in Datastore. */
@@ -156,13 +158,12 @@ public class Datastore {
     datastore.put(userEntity);
   }
 
-  /**
-   * Returns the User owned by the email address, or null if no matching User was
-   * found.
-   */
+  /** Returns the User owned by the email address, or null if no matching User was found. */
   public User getUser(String email) {
 
-    Query query = new Query(userColumn).setFilter(new Query.FilterPredicate("email", FilterOperator.EQUAL, email));
+    Query query =
+        new Query(userColumn)
+            .setFilter(new Query.FilterPredicate("email", FilterOperator.EQUAL, email));
     PreparedQuery results = datastore.prepare(query);
     Entity userEntity = results.asSingleEntity();
     if (userEntity == null) {
@@ -174,5 +175,4 @@ public class Datastore {
 
     return user;
   }
-
 }
