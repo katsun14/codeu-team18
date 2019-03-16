@@ -13,7 +13,7 @@ function drawChart() {
   medal_data.addColumn('number', 'Bronze');
 
 
-  //add data to book_data
+  //add data to medal_data
   medal_data.addRows([
     ["Norway", 14, 14, 11],
     ["Germany", 14, 10, 7],
@@ -25,10 +25,16 @@ function drawChart() {
   var medal_chart = new google.visualization.ColumnChart(document.getElementById('medal_chart'));
 
   var medal_chart_options = {
-    chart: {
-      title: "Medal Counts of Five Highest Ranking Countries in 2018 Winter Olympics"
+    title: "Medal Counts of Five Highest Ranking Countries in 2018 Winter Olympics",
+    height: 400,
+    width: 1000,
+    colors: ['#D6AF36', '#D7D7D7', '#A77044'],
+    hAxis: {
+      title: "Countries"
     },
-    colors: ['#D6AF36', '#D7D7D7', '#A77044']
+    vAxis: {
+      title: "Number of Medals"
+    }
   };
 
 
