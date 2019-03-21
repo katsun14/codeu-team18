@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <title>Map Project</title>
   <meta charset="UTF-8">
   <style>
-    #map{
+    #map {
       width: 500px;
       height: 500px;
       border: thin solid black;
@@ -14,8 +15,11 @@
   </script>
   <script src="/js/map-loader.js"></script>
 </head>
-<body onload="createMap();">
+
+<body onload="createMap(); createOlymMap();">
   <h1>Map Project</h1>
   <div id="map"></div>
+  <div id="olym-map"></div>
 </body>
+
 </html>
