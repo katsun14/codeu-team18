@@ -24,7 +24,7 @@ function createOlymMap() {
 
     const map = new google.maps.Map(document.getElementById('olym-map'), {
       center: { lat: 33.770015, lng: -39.379235 },
-      zoom: 3
+      zoom: 1
     });
 
     olym.forEach((city) => {
