@@ -100,6 +100,19 @@ public class Datastore {
   }
 
   /**
+   * Gets messages posted by all users.
+   *
+   * @return a list of messages posted by all users, or empty list if users have never posted a
+   *     message. List is sorted by time ascending.
+   */
+  public List<Message> getAllMessagesAscending() {
+
+    Query query = new Query(messageColumn).addSort(timestampColumn, SortDirection.ASCENDING);
+
+    return answerQuery(query);
+  }
+
+  /**
    * Gets messages posted by a specific user.
    *
    * @return a list of messages posted by the user, or empty list if user has never posted a
