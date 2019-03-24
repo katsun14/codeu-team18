@@ -1,9 +1,11 @@
 
 google.charts.load('current', { packages: ['corechart'] });
 
-google.charts.setOnLoadCallback(drawChart);
+google.charts.setOnLoadCallback(drawMedalChart);
 
-function drawChart() {
+google.charts.setOnLoadCallback(fetchMessageData);
+
+function drawMedalChart() {
   var medal_data = new google.visualization.DataTable();
 
   //define columns for the book_data DataTable instance
@@ -20,7 +22,7 @@ function drawChart() {
     ["Canada", 11, 8, 10],
     ["United States", 9, 8, 6],
     ["Netherlands", 8, 6, 6]
-  ]);
+    ]);
 
   var medal_chart = new google.visualization.ColumnChart(document.getElementById('medal_chart'));
 
@@ -39,4 +41,52 @@ function drawChart() {
 
 
   medal_chart.draw(medal_data, medal_chart_options);
+}
+
+function drawMessageChart(msgData) {
+  
+  var message_chart = new google.visualization.LineChart(document.getElementById('message_chart'));
+
+  var message_chart_options = {
+    title: "Message Counts Over Time",
+    height: 400,
+    width: 800,
+    hAxis: {
+      title: "Date"
+    },
+    vAxis: {
+      title: "Number of Messages"
+    }
+  };
+
+  message_chart.draw(msgData, message_chart_options);
+}
+
+function fetchMessageData() {
+  fetch("/messagechart")
+  .then((response) => {
+    return response.json();
+  })
+  .then((msgJson) => {
+    var msgData = new google.visualization.DataTable();
+                //define columns for the DataTable instance
+                msgData.addColumn('date', 'Date');
+                msgData.addColumn('number', 'Message Count');
+
+
+                for (i = 0; i < msgJson.length; i++) {
+                  msgRow = [];
+                  var timestampAsDate = new Date (msgJson[i].timestamp);
+                  var totalMessages = i + 1;
+                    //add the formatted values to msgRow array by using JS' push method
+                    msgRow.push(timestampAsDate, totalMessages);
+                    //msgRow.push(totalMessages);
+
+                    //console.log(msgRow);
+                    msgData.addRow(msgRow);
+
+                  }
+                //console.log(msgData);
+                drawMessageChart(msgData);
+              });
 }
