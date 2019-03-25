@@ -5,6 +5,8 @@ google.charts.setOnLoadCallback(drawMedalChart);
 
 google.charts.setOnLoadCallback(fetchMessageData);
 
+google.charts.setOnLoadCallback(fetchSentimentData);
+
 function drawMedalChart() {
   var medal_data = new google.visualization.DataTable();
 
@@ -88,5 +90,55 @@ function fetchMessageData() {
                   }
                 //console.log(msgData);
                 drawMessageChart(msgData);
+              });
+}
+
+function drawSentimentChart(msgData) {
+  
+  var sentiment_chart = new google.visualization.LineChart(document.getElementById('sentiment_chart'));
+
+  var sentiment_chart_options = {
+    title: "Average Sentiment Over Time",
+    height: 400,
+    width: 800,
+    hAxis: {
+      title: "Date"
+    },
+    vAxis: {
+      title: "Average Sentiment"
+    }
+  };
+
+  sentiment_chart.draw(msgData, sentiment_chart_options);
+}
+
+function fetchSentimentData() {
+  fetch("/sentimentchart")
+  .then((response) => {
+    return response.json();
+  })
+  .then((msgJson) => {
+    var msgData = new google.visualization.DataTable();
+                //define columns for the DataTable instance
+                msgData.addColumn('date', 'Date');
+                msgData.addColumn('number', 'Average Sentiment');
+
+                var avgSentiment = 0;
+                for (i = 0; i < msgJson.length; i++) {
+                  msgRow = [];
+                  var timestampAsDate = new Date (msgJson[i].timestamp);
+                  var sentiment = msgJson[i].sentimentScore;
+                  var count = i + 1;
+                  avgSentiment = sentiment / count;
+                    //add the formatted values to msgRow array by using JS' push method
+                    msgRow.push(timestampAsDate, avgSentiment);
+                    //msgRow.push(totalMessages);
+
+                    //console.log(msgRow);
+                    msgData.addRow(msgRow);
+
+                  }
+                //console.log(msgData);
+                drawSentimentChart(msgData);
               });
 }
