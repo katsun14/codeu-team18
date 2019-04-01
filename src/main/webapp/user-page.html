@@ -32,6 +32,24 @@ limitations under the License.
   </nav>
   <h1 id="page-title">User Page</h1>
 
+  <div id="name-container">Loading...</div>
+  <div id="name-form" class="hidden">
+    <form action="/name" method="POST">
+      <textarea name="name" placeholder="name" rows=4 required></textarea>
+      <br />
+      <input type="submit" value="Submit">
+    </form>
+  </div>
+
+  <div id="country-container">Loading...</div>
+  <div id="country-form" class="hidden">
+    <form action="/country" method="POST">
+      <textarea name="country" placeholder="country" rows=4 required></textarea>
+      <br />
+      <input type="submit" value="Submit">
+    </form>
+  </div>
+
   <div id="about-me-container">Loading...</div>
   <div id="about-me-form" class="hidden">
     <form action="/about" method="POST">
