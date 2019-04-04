@@ -24,10 +24,14 @@ limitations under the License.
   <script src="/js/navigation-loader.js"></script>
 </head>
 
-<body onload="addLoginOrLogoutLinkToNavigation(); addBasicLinkNavigation('stats.html', 'Stats Page'); addBasicLinkNavigation('feed.html', 'Public Feed');addBasicLinkNavigation('charts.html', 'Charts Page');">
+<body onload="loadNavBar();">
   <nav>
     <ul id="navigation">
       <li><a href="/">Home</a></li>
+      <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">More</a>
+        <ul class="dropdown-content" id="dropdown-content"></ul>
+      </li>
     </ul>
   </nav>
 
