@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Events</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/events-page.css">
+  <script src="/js/events-loader.js"></script>
+  <script src="/js/navigation-loader.js"></script>
+</head>
+
+<body onload="buildUI(); addLoginOrLogoutLinkToNavigation(); addBasicLinkNavigation('stats.html', 'Stats Page'); addBasicLinkNavigation('charts.html', 'Charts Page');">
+  <nav>
+    <ul id="navigation">
+      <li><a href="/">Events Home</a></li>
+    </ul>
+  </nav>
+
+  <div>
+    <h1>Events</h1>
+    <hr />
+    <div id="message-container">Loading...</div>
+  </div>
+</body>
+
+</html>
