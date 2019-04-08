@@ -9,9 +9,16 @@
   <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="/css/map-page.css">
   <script src="/js/map-loader.js"></script>
+  <script src="/js/navigation-loader.js"></script>
 </head>
 
-<body onload="createMap(); createOlymMap();">
+<body onload="createMap(); createOlymMap(); addLoginOrLogoutLinkToNavigation(); addBasicLinkNavigation('stats.html', 'Stats Page'); addBasicLinkNavigation('feed.html', 'Public Feed');addBasicLinkNavigation('charts.html', 'Charts Page');addBasicLinkNavigation('user-map.html', 'User Map');">
+  <nav>
+    <ul id="navigation">
+      <li><a href="/">Home</a></li>
+    </ul>
+    <ul id="languages"></ul>
+  </nav>
   <h1>Map Project</h1>
   <div id="map" class="map"></div>
   <div id="olym-map" class="map"></div>
