@@ -223,5 +223,5 @@ function buildUI() {
   fetchName();
   fetchCountry();
   fetchAboutMe();
-  buildLanguageLinks();
+//  buildLanguageLinks();
 }
