@@ -6,6 +6,7 @@ public class User {
   private String aboutMe;
   private String name;
   private String country;
+  private String language;
 
   // public User(String email, String aboutMe) {
   //   this.email = email;
@@ -14,11 +15,12 @@ public class User {
   //   this.country = "Unknown Country";
   // }
 
-  public User(String email, String aboutMe, String name, String country) {
+  public User(String email, String aboutMe, String name, String country, String language) {
     this.email = email;
     this.aboutMe = aboutMe;
     this.name = name;
     this.country = country;
+    this.language = language;
   }
 
   public String getEmail() {
@@ -40,6 +42,14 @@ public class User {
     return country;
   }
 
+  public String getLanguage() {
+    if (language == null || language == "") {
+      return "Unknown Language Preference";
+    }
+
+    return language;
+  }
+
   public void setEmail(String email) {
     this.email = email;
   }
@@ -54,5 +64,9 @@ public class User {
 
   public void setCountry(String country) {
     this.country = country;
+  }
+
+  public void setLanguage(String language) {
+    this.language = language;
   }
 }

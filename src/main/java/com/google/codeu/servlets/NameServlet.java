@@ -55,7 +55,7 @@ public class NameServlet extends HttpServlet {
     String userEmail = userService.getCurrentUser().getEmail();
 
     User user = datastore.getUser(userEmail);
-    if (user == null) user = new User(userEmail, "", "", "");
+    if (user == null) user = new User(userEmail, "", "", "", "");
 
     user.setName(request.getParameter("name"));
     datastore.storeUser(user);

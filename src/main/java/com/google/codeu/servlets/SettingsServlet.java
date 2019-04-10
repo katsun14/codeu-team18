@@ -10,9 +10,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/** Handles fetching and saving user's country. */
-@WebServlet("/country")
-public class CountryServlet extends HttpServlet {
+/** Handles fetching and saving user's name. */
+@WebServlet("/settings")
+public class SettingsServlet extends HttpServlet {
 
   private Datastore datastore;
 
@@ -21,10 +21,9 @@ public class CountryServlet extends HttpServlet {
     datastore = new Datastore();
   }
 
-  /** Responds with the "country" section for a particular user. */
+  /** Responds with the "name" section for a particular user. */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
     response.setContentType("text/html");
 
     String user = request.getParameter("user");
@@ -36,11 +35,11 @@ public class CountryServlet extends HttpServlet {
 
     User userData = datastore.getUser(user);
 
-    if (userData == null || userData.getCountry() == null) {
+    if (userData == null || userData.getName() == null) {
       return;
     }
 
-    response.getOutputStream().println(userData.getCountry());
+    response.getOutputStream().println(userData.getLanguage());
   }
 
   @Override
@@ -52,14 +51,19 @@ public class CountryServlet extends HttpServlet {
       return;
     }
 
+    String update = request.getParameter("language");
+    if (update == null || update.equals("")) {
+      return;
+    }
+
     String userEmail = userService.getCurrentUser().getEmail();
 
     User user = datastore.getUser(userEmail);
-    if (user == null) user = new User(userEmail, "", "", "", "");
 
-    user.setCountry(request.getParameter("country"));
+    user.setLanguage(update);
+
     datastore.storeUser(user);
 
-    response.sendRedirect("/user-page.html?user=" + userEmail);
+    response.getOutputStream().println("Success");
   }
 }

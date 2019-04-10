@@ -57,7 +57,7 @@ public class AboutMeServlet extends HttpServlet {
     String userEmail = userService.getCurrentUser().getEmail();
 
     User user = datastore.getUser(userEmail);
-    if (user == null) user = new User(userEmail, "", "", "");
+    if (user == null) user = new User(userEmail, "", "", "", "");
 
     user.setAboutMe(Jsoup.clean(request.getParameter("about-me"), Whitelist.none()));
     datastore.storeUser(user);

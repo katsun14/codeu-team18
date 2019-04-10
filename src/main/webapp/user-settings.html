@@ -6,6 +6,7 @@
 	<meta charset="UTF-8">
 	<link rel="stylesheet" href="/css/main.css">
 	<script src="/js/navigation-loader.js"></script>
+	<script src="/js/user-settings.js"></script>
 </head>
 
 
@@ -22,7 +23,23 @@
 
 <div>
 	<h3> Language Preference </h3>
-	< 
+	<ul style="list-style-type:none;">
+		<li> 
+			<button onclick="updateLanguage('en');">English </button>
+		</li>
+		<li>
+			<button onclick="updateLanguage('zh');">Chinese</button>
+		</li>
+		<li>
+			<button onclick="updateLanguage('hi');">Hindi</button>
+		</li>
+		<li>
+			<button onclick="updateLanguage('es');">Spanish</button>
+		</li>
+		<li>
+			<button onclick="updateLanguage('ar');">Arabic</button>
+		</li>
+	</ul>
 </div>
 
 </body>

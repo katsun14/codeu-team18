@@ -20,6 +20,7 @@ const parameterUsername = urlParams.get('user');
 const maxMessages = 5;
 //HashMap to map supported languages and their language codes
 var supportedLanguages = new Map();
+var defaultLanguage;
 
 // URL must include ?user=XYZ parameter. If not, redirect to homepage.
 if (!parameterUsername) {
@@ -36,6 +37,20 @@ function fillMap() {
   supportedLanguages.set('hi', 'Hindi');
   supportedLanguages.set('es', 'Spanish');
   supportedLanguages.set('ar', 'Arabic');
+}
+
+
+function fetchMessages() {
+  const url = '/settings?user=' + parameterUsername;
+  fetch(url)
+    .then((response) => {
+      return response.text()
+    })
+    .then((language) => {
+        defaultLanguage = language;
+        console.log(defaultLanguage);
+        getMessages();
+    }) 
 }
 
 
@@ -68,14 +83,15 @@ function showMessageFormIfViewingSelf() {
 }
 
 /** Fetches messages and add them to the page. */
-function fetchMessages() {
-  const parameterLanguage = urlParams.get('language');
+function getMessages() {
   let url = '/messages?user=' + parameterUsername;
 
-  if (parameterLanguage && 
-    supportedLanguages.has(parameterLanguage)) {
+  const parameterLanguage = defaultLanguage;
+  if (parameterLanguage) {
     url += '&language=' + parameterLanguage;
   }
+
+  console.log(url);
 
   fetch(url)
       .then((response) => {
