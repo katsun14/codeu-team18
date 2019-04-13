@@ -9,12 +9,10 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.jsoup.Jsoup;
-import org.jsoup.safety.Whitelist;
 
-/** Handles fetching and saving user data. */
-@WebServlet("/about")
-public class AboutMeServlet extends HttpServlet {
+/** Handles fetching and saving user's name. */
+@WebServlet("/name")
+public class NameServlet extends HttpServlet {
 
   private Datastore datastore;
 
@@ -23,7 +21,7 @@ public class AboutMeServlet extends HttpServlet {
     datastore = new Datastore();
   }
 
-  /** Responds with the "about me" section for a particular user. */
+  /** Responds with the "name" section for a particular user. */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -38,11 +36,11 @@ public class AboutMeServlet extends HttpServlet {
 
     User userData = datastore.getUser(user);
 
-    if (userData == null || userData.getAboutMe() == null) {
+    if (userData == null || userData.getName() == null) {
       return;
     }
 
-    response.getOutputStream().println(userData.getAboutMe());
+    response.getOutputStream().println(userData.getName());
   }
 
   @Override
@@ -59,7 +57,7 @@ public class AboutMeServlet extends HttpServlet {
     User user = datastore.getUser(userEmail);
     if (user == null) user = new User(userEmail, "", "", "");
 
-    user.setAboutMe(Jsoup.clean(request.getParameter("about-me"), Whitelist.none()));
+    user.setName(request.getParameter("name"));
     datastore.storeUser(user);
 
     response.sendRedirect("/user-page.html?user=" + userEmail);
