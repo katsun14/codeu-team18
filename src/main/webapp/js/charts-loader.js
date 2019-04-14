@@ -180,7 +180,7 @@ function fetchGeoData() {
                     console.log(country);
                     console.log(count);
                     flag = true;
-                    count = 0;
+                    count = 1;
                     if (i + 1 < usrJson.length){
                       country = usrJson[i+1].country;
                     }
