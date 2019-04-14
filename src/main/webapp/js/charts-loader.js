@@ -150,9 +150,9 @@ function drawGeoChart(usrData) {
   var geo_chart = new google.visualization.GeoChart(document.getElementById('geo_chart'));
 
   var geo_chart_options = {
-    title: "Users per Country",
-    height: 400,
-    width: 800,
+    title: "Users in Each Country",
+    height: 600,
+    width: 1200,
   };
 
   geo_chart.draw(usrData, geo_chart_options);
