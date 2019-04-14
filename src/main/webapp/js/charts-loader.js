@@ -151,8 +151,8 @@ function drawGeoChart(usrData) {
 
   var geo_chart_options = {
     title: "Users in Each Country",
-    height: 600,
-    width: 1200,
+    height: 450,
+    width: 900
   };
 
   geo_chart.draw(usrData, geo_chart_options);
