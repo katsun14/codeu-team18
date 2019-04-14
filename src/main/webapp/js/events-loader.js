@@ -30,7 +30,7 @@ function buildMessageDiv(message) {
   const headerDiv = document.createElement('div');
   headerDiv.classList.add('message-header');
   var messageHeader = 'From: ' + message.user +
-            ' - ' + new Date(message.timestamp) + ' [' + message.sentimentScore + ']yay';
+            ' - ' + new Date(message.timestamp) + ' [' + message.sentimentScore + ']';
 
   headerDiv.appendChild(document.createTextNode(messageHeader));
 
@@ -48,8 +48,8 @@ function buildMessageDiv(message) {
   const messageDiv = document.createElement('div');
   messageDiv.classList.add("message-div");
   messageDiv.appendChild(headerDiv);
-  messageDiv.appendChild(bodyDiv);
   messageDiv.appendChild(entityDiv);
+  messageDiv.appendChild(bodyDiv);
 
   return messageDiv;
 }
