@@ -69,6 +69,7 @@ function loadNavBar() {
   addBasicLinkNavigation('feed.html', 'Public Feed');
   addBasicLinkNavigation('charts.html', 'Charts Page');
   addBasicLinkNavigation('map.html', 'Maps Page');
+  addBasicLinkNavigation('user-map.html', 'User Map')
 }
 
 
