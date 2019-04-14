@@ -170,10 +170,22 @@ function fetchGeoData() {
                 usrData.addColumn('number', 'Number of Users');
 
                 var count = 1;
-                var country = usrJson[0].country;
+                var actualCountry = usrJson[0].country;
+                if (actualCountry == "US" || actualCountry == "U.S." ||
+                  actualCountry == "USA" || actualCountry == "U.S.A" || actualCountry == "U.S.A." ||
+                  actualCountry == "United States of America"){
+                  actualCountry = "United States";
+                }
+                var country = actualCountry;
                 var flag = false;
                 for (i = 1; i < usrJson.length; i++) {
-                  if (usrJson[i].country != country){
+                  var actualCountry = usrJson[i].country;
+                  if (actualCountry == "US" || actualCountry == "U.S." ||
+                    actualCountry == "USA" || actualCountry == "U.S.A" || actualCountry == "U.S.A." ||
+                    actualCountry == "United States of America"){
+                    actualCountry = "United States";
+                  }
+                  if (actualCountry != country){
                     usrRow = [];
                     usrRow.push(country, count);
                     usrData.addRow(usrRow);
@@ -181,7 +193,7 @@ function fetchGeoData() {
                     console.log(count);
                     flag = true;
                     count = 1;
-                    country = usrJson[i].country;
+                    country = actualCountry;
                   } else{
                     count = count + 1;
                     flag = false;
