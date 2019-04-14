@@ -181,23 +181,19 @@ function fetchGeoData() {
                     console.log(count);
                     flag = true;
                     count = 1;
-                    if (i + 1 < usrJson.length){
-                      country = usrJson[i+1].country;
-                    }
+                    country = usrJson[i].country;
                   } else{
                     count = count + 1;
-                    flag = false
+                    flag = false;
                   }
 
                 }
-                if (flag == false){
-                  usrRow = [];
-                  usrRow.push(country, count);
-                  usrData.addRow(usrRow);
-                  console.log(country);
-                  console.log(count);
-                }
-                //console.log(msgData);
+                usrRow = [];
+                usrRow.push(country, count);
+                usrData.addRow(usrRow);
+                console.log(country);
+                console.log(count);
+
                 drawGeoChart(usrData);
               });
 }
