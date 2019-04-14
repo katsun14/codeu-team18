@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /** Handles fetching all messages for the events feed. */
 @WebServlet("/events")
-public class MessageFeedServlet extends HttpServlet {
+public class EventsPageServlet extends HttpServlet {
 
   private Datastore datastore;
 
