@@ -7,6 +7,8 @@ google.charts.setOnLoadCallback(fetchMessageData);
 
 google.charts.setOnLoadCallback(fetchSentimentData);
 
+google.charts.setOnLoadCallback(fetchGeoData);
+
 function drawMedalChart() {
   var medal_data = new google.visualization.DataTable();
 
@@ -140,5 +142,62 @@ function fetchSentimentData() {
                   }
                 //console.log(msgData);
                 drawSentimentChart(msgData);
+              });
+}
+
+function drawGeoChart(usrData) {
+  
+  var geo_chart = new google.visualization.GeoChart(document.getElementById('geo_chart'));
+
+  var geo_chart_options = {
+    title: "Users per Country",
+    height: 400,
+    width: 800,
+  };
+
+  geo_chart.draw(usrData, geo_chart_options);
+}
+
+function fetchGeoData() {
+  fetch("/geochart")
+  .then((response) => {
+    return response.json();
+  })
+  .then((usrJson) => {
+    var usrData = new google.visualization.DataTable();
+                //define columns for the DataTable instance
+                usrData.addColumn('string', 'Country of Origin');
+                usrData.addColumn('number', 'Number of Users');
+
+                var count = 1;
+                var country = usrJson[0].country;
+                var flag = false;
+                for (i = 1; i < usrJson.length; i++) {
+                  if (country != usrJson[i].country){
+                    usrRow = [];
+                    usrRow.push(country, count);
+                    usrData.addRow(usrRow);
+                    console.log(country);
+                    console.log(count);
+                    flag = true;
+                    count = 0;
+                    if (i + 1 < usrJson.length){
+                      country = usrJson[i+1].country;
+                    }
+                  } else{
+                    count = count + 1;
+                    flag = false
+                  }
+
+                }
+                if (flag == false){
+                  usrRow = [];
+                  usrRow.push(country, count);
+                  usrData.addRow(usrRow);
+                  console.log(country);
+                  console.log(count);
+                }
+                //console.log(msgData);
+                drawGeoChart(usrData);
               });
 }
