@@ -173,7 +173,7 @@ function fetchGeoData() {
                 var country = usrJson[0].country;
                 var flag = false;
                 for (i = 1; i < usrJson.length; i++) {
-                  if (country != usrJson[i].country){
+                  if (usrJson[i].country != country){
                     usrRow = [];
                     usrRow.push(country, count);
                     usrData.addRow(usrRow);
