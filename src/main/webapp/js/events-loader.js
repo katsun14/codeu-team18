@@ -29,8 +29,10 @@ function buildMessageDiv(message) {
 
   const headerDiv = document.createElement('div');
   headerDiv.classList.add('message-header');
-  headerDiv.appendChild(usernameDiv);
-  headerDiv.appendChild(timeDiv);
+  var messageHeader = 'From: ' + message.user +
+            ' - ' + new Date(message.timestamp) + ' [' + message.sentimentScore + ']yay';
+
+  headerDiv.appendChild(document.createTextNode(messageHeader));
 
   // const bodyDiv = document.createElement('div');
   // bodyDiv.classList.add('message-body');
@@ -39,10 +41,15 @@ function buildMessageDiv(message) {
   bodyDiv.classList.add('message-body');
   bodyDiv.innerHTML = message.text;
 
+  const entityDiv = document.createElement('div');
+  entityDiv.classList.add('message-entity');
+  entityDiv.innerHTML = message.entityInformation;
+
   const messageDiv = document.createElement('div');
   messageDiv.classList.add("message-div");
   messageDiv.appendChild(headerDiv);
   messageDiv.appendChild(bodyDiv);
+  messageDiv.appendChild(entityDiv);
 
   return messageDiv;
 }

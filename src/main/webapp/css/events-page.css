@@ -9,3 +9,28 @@
 .info-header {
   color: rgb(119, 88, 8);
 }
+
+.message-div {
+  border: thin solid black;
+  border-radius: 0;
+  margin-top: 30px;
+  font-family: "Helvetica";
+  background-color:white;
+}
+
+/* Add a bottom border to the message header. */
+.message-header {
+  border-bottom: thin solid black;
+  padding: 5px;
+  background-color:goldenrod;
+}
+
+/* Give the message body a margin so the text
+   isn't too close to the border. */
+.message-body {
+  margin: 10px;
+}
+
+.message-entity {
+  margin: 10px;
+}

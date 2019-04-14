@@ -27,6 +27,7 @@ public class Message {
   private long timestamp;
   private String recipient;
   private float sentimentScore;
+  private String entityInformation;
 
   /**
    * Constructs a new {@link Message} posted by {@code user} to {@code recipient} with {@code text}
@@ -72,5 +73,13 @@ public class Message {
 
   public float getSentimentScore() {
     return sentimentScore;
+  }
+
+  public String getEntityInformation() {
+    return entityInformation;
+  }
+
+  public void setEntityInformation(String newEntityInformation) {
+    this.entityInformation = newEntityInformation;
   }
 }
