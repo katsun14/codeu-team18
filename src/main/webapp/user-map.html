@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<title>User Map</title>
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDJtl9cCYzhz3hGX9JpiauvO_Jqkym6MSU"></script>
@@ -8,10 +9,15 @@
 	<script src="/js/user-map-loader.js"></script>
 	<script src="/js/navigation-loader.js"></script>
 </head>
-<body onload="createMap();addLoginOrLogoutLinkToNavigation(); addBasicLinkNavigation('stats.html', 'Stats Page'); addBasicLinkNavigation('feed.html', 'Public Feed');addBasicLinkNavigation('charts.html', 'Charts Page');addBasicLinkNavigation('map.html', 'Maps Page');">
+
+<body onload="createMap();loadNavBar();">
 	<nav>
 		<ul id="navigation">
 			<li><a href="/">Home</a></li>
+			<li class="dropdown">
+				<a href="javascript:void(0)" class="dropbtn">More</a>
+				<ul class="dropdown-content" id="dropdown-content"></ul>
+			</li>
 		</ul>
 		<ul id="languages"></ul>
 	</nav>
@@ -19,4 +25,5 @@
 	<h4>You must be logged in to permanently save your marker on the map.</h4>
 	<div id="map" class="map"></div>
 </body>
+
 </html>
