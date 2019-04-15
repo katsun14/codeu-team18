@@ -20,6 +20,7 @@
  */
 function addLoginOrLogoutLinkToNavigation() {
   const navigationElement = document.getElementById('navigation');
+  console.log(navigationElement.childNodes[1]);
   if (!navigationElement) {
     console.warn('Navigation element not found!');
     return;
@@ -31,15 +32,17 @@ function addLoginOrLogoutLinkToNavigation() {
     })
     .then((loginStatus) => {
       if (loginStatus.isLoggedIn) {
-        navigationElement.appendChild(createListItem(createLink(
-          '/user-page.html?user=' + loginStatus.username, 'Your Page')));
+        navigationElement.insertBefore(createListItem(createLink(
+          '/user-page.html?user=' + loginStatus.username, 'Your Page')),
+          navigationElement.childNodes[2]);
 
-        navigationElement.appendChild(
-          createListItem(createLink('/logout', 'Logout')));
+        navigationElement.insertBefore(createListItem(
+          createLink('/logout', 'Logout')), navigationElement.childNodes[2]);
       } else {
-        navigationElement.appendChild(
-          createListItem(createLink('/login', 'Login')));
+        navigationElement.insertBefore(createListItem(
+          createLink('/login', 'Login')), navigationElement.childNodes[2]);
       }
+
     });
 }
 
@@ -48,13 +51,25 @@ function addLoginOrLogoutLinkToNavigation() {
  * Adds a basic link to the page, with id 'text' to page 'url'
  */
 function addBasicLinkNavigation(url, text) {
-  const navigationElement = document.getElementById('navigation');
+  const navigationElement = document.getElementById('dropdown-content');
   if (!navigationElement) {
     console.warn('Navigation element not found!');
     return;
   }
 
   navigationElement.appendChild(createListItem(createLink(url, text)));
+}
+
+/**
+ * Loads the Navigation Buttons on Each Page
+ */
+function loadNavBar() {
+  addLoginOrLogoutLinkToNavigation();
+  addBasicLinkNavigation('stats.html', 'Stats Page');
+  addBasicLinkNavigation('feed.html', 'Public Feed');
+  addBasicLinkNavigation('charts.html', 'Charts Page');
+  addBasicLinkNavigation('map.html', 'Maps Page');
+  addBasicLinkNavigation('user-map.html', 'User Map')
 }
 
 

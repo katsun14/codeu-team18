@@ -61,6 +61,8 @@ function showMessageFormIfViewingSelf() {
           messageForm.classList.remove('hidden');
         }
       });
+      document.getElementById('name-form').classList.remove('hidden');
+      document.getElementById('country-form').classList.remove('hidden');
       document.getElementById('about-me-form').classList.remove('hidden');
 }
 
@@ -163,6 +165,36 @@ function fetchAboutMe(){
   });
 }
 
+function fetchName(){
+  const url = '/name?user=' + parameterUsername;
+  fetch(url).then((response) => {
+    return response.text();
+  }).then((name) => {
+    const nameContainer = document.getElementById('name-container');
+    if(name == ''){
+      name = 'Unknown User';
+    }
+    
+    nameContainer.innerHTML = name;
+
+  });
+}
+
+function fetchCountry(){
+  const url = '/country?user=' + parameterUsername;
+  fetch(url).then((response) => {
+    return response.text();
+  }).then((country) => {
+    const countryContainer = document.getElementById('country-container');
+    if(country == ''){
+      country = 'Unknown Country';
+    }
+    
+    countryContainer.innerHTML = country;
+
+  });
+}
+
 
 /*
 * Creates links to make requests for translating messages
@@ -187,6 +219,8 @@ function buildUI() {
   showMessageFormIfViewingSelf();
   fillMap();
   fetchMessages();
+  fetchName();
+  fetchCountry();
   fetchAboutMe();
   buildLanguageLinks();
 }
