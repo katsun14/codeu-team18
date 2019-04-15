@@ -22,6 +22,7 @@ limitations under the License.
   <meta charset="UTF-8">
   <link rel="stylesheet" href="/css/main.css">
   <link rel="stylesheet" href="/css/user-page.css">
+  <link href='/node_modules/horsey/dist/horsey.css' rel='stylesheet' type='text/css' />
   <script src="/js/user-page-loader.js"></script>
   <script src="/js/navigation-loader.js"></script>
 </head>
@@ -34,6 +35,24 @@ limitations under the License.
     <ul id="languages"></ul>
   </nav>
   <h1 id="page-title">User Page</h1>
+
+  <div id="name-container">Loading...</div>
+  <div id="name-form" class="hidden">
+    <form action="/name" method="POST">
+      <textarea name="name" placeholder="name" rows=4 required></textarea>
+      <br />
+      <input type="submit" value="Submit">
+    </form>
+  </div>
+
+  <div id="country-container">Loading...</div>
+  <div id="country-form" class="hidden">
+    <form action="/country" method="POST">
+      <textarea name="country" placeholder="country" rows=4 required></textarea>
+      <br />
+      <input type="submit" value="Submit">
+    </form>
+  </div>
 
   <div id="about-me-container">Loading...</div>
   <div id="about-me-form" class="hidden">
@@ -60,5 +79,36 @@ limitations under the License.
   </div>
 
 </body>
+
+<div class='examples'>
+  <div class='parent'>
+    <label for='hy'>Enter the name of a fruit: </label>
+    <input id='hy'/>
+  </div>
+</div>
+  <div class='parent'>
+    <label for='kv'>You can also use "key value pairs": </label>
+    <input id='kv'/>
+  </div>
+  <div class='parent'>
+    <label for='ig'>But why stop there? You can render the suggestion however you like! </label>
+    <input id='ig'/>
+  </div>
+  <div class='parent'>
+    <label for='ig'>You can also limit the amount of suggestions to display! </label>
+    <input id='il'/>
+  </div>
+  <div class='parent'>
+    <label for='ig'>Want to use it as in a textarea? </label>
+    <textarea id='ta'>Add a mention somewhere in the textarea, using an at-sign like in emails. For example, you can type @michael. The cursor will actually follow you, pretty nice!</textarea>
+  </div>
+  <div class='parent'>
+    <label for='ig'>Want to use it as a drop-down list? </label>
+    <div id='ddl'>Click here to set fruity treat type</div>
+  </div>
+</div>
+
+<script src="/node_modules/horsey/dist/horsey.js"></script>
+<script src="/js/user-search-loader.js"></script>
 
 </html>

@@ -26,7 +26,6 @@ if (!parameterUsername) {
   window.location.replace('/');
 }
 
-
 /*
 * Set supported languages in hashmap
 */

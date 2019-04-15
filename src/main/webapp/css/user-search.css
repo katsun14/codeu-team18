@@ -1,0 +1,48 @@
+label {
+  display: block;
+  margin-bottom: 15px;
+}
+
+.parent {
+  margin: 50px 0;
+  padding: 20px;
+}
+
+input {
+  border: none;
+  outline: none;
+  padding: 10px;
+  border: 0;
+  margin: 5px 0;
+  display: block;
+  width: 100%;
+}
+
+button {
+  border: 0;
+  padding: 18px 12px;
+  margin-left: 6px;
+  cursor: pointer;
+  outline: none;
+}
+
+.inline {
+  display: inline-block;
+}
+
+.gh-fork {
+  position: fixed;
+  top: 0;
+  right: 0;
+  border: 0;
+}
+
+.autofruit {
+  width: 16px;
+  margin-right: 3px;
+}
+
+#ddl {
+  cursor: pointer;
+  padding: 10px;
+}
