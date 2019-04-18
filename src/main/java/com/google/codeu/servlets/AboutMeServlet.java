@@ -2,6 +2,10 @@ package com.google.codeu.servlets;
 
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
+import com.google.cloud.translate.Translate;
+import com.google.cloud.translate.Translate.TranslateOption;
+import com.google.cloud.translate.TranslateOptions;
+import com.google.cloud.translate.Translation;
 import com.google.codeu.data.Datastore;
 import com.google.codeu.data.User;
 import java.io.IOException;
@@ -30,6 +34,7 @@ public class AboutMeServlet extends HttpServlet {
     response.setContentType("text/html");
 
     String user = request.getParameter("user");
+    String targetLanguageCode = request.getParameter("language");
 
     if (user == null || user.equals("")) {
       // Request is invalid, return empty response
@@ -42,7 +47,13 @@ public class AboutMeServlet extends HttpServlet {
       return;
     }
 
-    response.getOutputStream().println(userData.getAboutMe());
+    String text = userData.getAboutMe();
+
+    if (targetLanguageCode != null) {
+      text = translateText(text, targetLanguageCode);
+    }
+
+    response.getWriter().println(text);
   }
 
   @Override
@@ -63,5 +74,19 @@ public class AboutMeServlet extends HttpServlet {
     datastore.storeUser(user);
 
     response.sendRedirect("/user-page.html?user=" + userEmail);
+  }
+
+  public String translateText(String text, String targetLanguageCode) {
+    Translate translate = TranslateOptions.getDefaultInstance().getService();
+
+    Translation translation =
+        translate.translate(text, TranslateOption.targetLanguage(targetLanguageCode));
+    String translatedText = translation.getTranslatedText();
+
+    if (translatedText != null) {
+      text = translatedText;
+    }
+
+    return text;
   }
 }
