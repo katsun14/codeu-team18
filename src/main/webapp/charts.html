@@ -9,21 +9,28 @@
   <script src="/js/navigation-loader.js"></script>
 </head>
 
-<body onload="addLoginOrLogoutLinkToNavigation(); addBasicLinkNavigation('stats.html', 'Stats Page'); addBasicLinkNavigation('feed.html', 'Public Feed');addBasicLinkNavigation('map.html', 'Maps Page');addBasicLinkNavigation('user-map.html', 'User Map');">
+<body onload="loadNavBar();">
   <nav>
     <ul id="navigation">
       <li><a href="/">Home</a></li>
+      <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">More</a>
+        <ul class="dropdown-content" id="dropdown-content"></ul>
+      </li>
     </ul>
     <ul id="languages"></ul>
   </nav>
 
   <h1>Charts</h1>
 
+  <div id="geo_chart"></div>
+
   <div id="medal_chart"></div>
-  
+
   <div id="message_chart"></div>
 
   <div id="sentiment_chart"></div>
+  
 </body>
 
 </html>

@@ -195,6 +195,48 @@ public class Datastore {
     return user;
   }
 
+  /** Retrieves messages for a specified query. */
+  public List<User> answerUserQuery(Query query) {
+    List<User> users = new ArrayList<>();
+
+    PreparedQuery results = datastore.prepare(query);
+
+    for (Entity entity : results.asIterable()) {
+      try {
+        String email = (String) entity.getProperty("email");
+        String aboutMe = (String) entity.getProperty("aboutMe");
+        String name =
+            entity.getProperty("name") == null
+                ? "Unknown User"
+                : ((String) entity.getProperty("name"));
+        String country =
+            entity.getProperty("country") == null
+                ? "Unknown Country"
+                : ((String) entity.getProperty("country"));
+        String language =
+            entity.getProperty("language") == null
+                ? "en"
+                : ((String) entity.getProperty("language"));
+
+        User user = new User(email, aboutMe, name, country, language);
+        users.add(user);
+      } catch (Exception e) {
+        System.err.println("Error reading user.");
+        System.err.println(entity.toString());
+        e.printStackTrace();
+      }
+    }
+
+    return users;
+  }
+
+  public List<User> getAllUsersCountry() {
+
+    Query query = new Query(userColumn).addSort("country", SortDirection.ASCENDING);
+
+    return answerUserQuery(query);
+  }
+
   public List<UserMarker> getMarkers() {
     List<UserMarker> markers = new ArrayList<>();
 
