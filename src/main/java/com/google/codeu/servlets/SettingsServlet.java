@@ -26,7 +26,13 @@ public class SettingsServlet extends HttpServlet {
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
     response.setContentType("text/html");
 
-    String user = request.getParameter("user");
+    UserService userService = UserServiceFactory.getUserService();
+    if (!userService.isUserLoggedIn()) {
+      response.sendRedirect("/index.html");
+      return;
+    }
+
+    String user = userService.getCurrentUser().getEmail();
 
     if (user == null || user.equals("")) {
       // Request is invalid, return empty response
@@ -35,7 +41,7 @@ public class SettingsServlet extends HttpServlet {
 
     User userData = datastore.getUser(user);
 
-    if (userData == null || userData.getName() == null) {
+    if (userData == null || userData.getLanguage() == null) {
       return;
     }
 
@@ -57,8 +63,11 @@ public class SettingsServlet extends HttpServlet {
     }
 
     String userEmail = userService.getCurrentUser().getEmail();
-
     User user = datastore.getUser(userEmail);
+
+    if (user == null) {
+      user = new User(userEmail, "", "", "", "");
+    }
 
     user.setLanguage(update);
 

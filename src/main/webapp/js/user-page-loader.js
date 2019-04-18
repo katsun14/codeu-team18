@@ -41,7 +41,7 @@ function fillMap() {
 
 
 function fetchMessages() {
-  const url = '/settings?user=' + parameterUsername;
+  const url = '/settings';
   fetch(url)
     .then((response) => {
       return response.text()
