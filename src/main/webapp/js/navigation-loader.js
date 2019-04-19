@@ -65,11 +65,11 @@ function addBasicLinkNavigation(url, text) {
  */
 function loadNavBar() {
   addLoginOrLogoutLinkToNavigation();
-  addBasicLinkNavigation('stats.html', 'Stats Page');
   addBasicLinkNavigation('feed.html', 'Public Feed');
-  addBasicLinkNavigation('charts.html', 'Charts Page');
-  addBasicLinkNavigation('map.html', 'Maps Page');
-  addBasicLinkNavigation('user-map.html', 'User Map')
+  addBasicLinkNavigation('charts.html', 'Charts');
+  // addBasicLinkNavigation('map.html', 'Maps');
+  addBasicLinkNavigation('user-map.html', 'Maps');
+  addBasicLinkNavigation('stats.html', 'Stats Page');
 }
 
 
