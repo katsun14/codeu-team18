@@ -70,6 +70,7 @@ function loadNavBar() {
   // addBasicLinkNavigation('map.html', 'Maps');
   addBasicLinkNavigation('user-map.html', 'Maps');
   addBasicLinkNavigation('stats.html', 'Stats Page');
+  addBasicLinkNavigation('events.html', 'Events Page');
 }
 
 
