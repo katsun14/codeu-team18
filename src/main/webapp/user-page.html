@@ -37,6 +37,16 @@ limitations under the License.
   </nav>
   <h1 id="page-title">User Page</h1>
 
+  <div class='examples'>
+    <div class='parent'>
+      <form action="/geochart" method="POST">
+        <label for='hy'>Search for a user by name: </label>
+        <input id='hy' name="search-user"/>
+        <input type="submit" value="Submit">
+       </form>
+    </div>
+  </div>
+
   <div id="name-container">Loading...</div>
   <div id="name-form" class="hidden">
     <form action="/name" method="POST">
@@ -81,13 +91,7 @@ limitations under the License.
 
 </body>
 
-<div class='examples'>
-  <div class='parent'>
-    <label for='hy'>Enter the name of a fruit: </label>
-    <input id='hy'/>
-  </div>
-</div>
-  <div class='parent'>
+  <!-- <div class='parent'>
     <label for='kv'>You can also use "key value pairs": </label>
     <input id='kv'/>
   </div>
@@ -106,8 +110,8 @@ limitations under the License.
   <div class='parent'>
     <label for='ig'>Want to use it as a drop-down list? </label>
     <div id='ddl'>Click here to set fruity treat type</div>
-  </div>
-</div>
+  </div> -->
+
 
 <script src="/node_modules/horsey/dist/horsey.js"></script>
 <script src="/js/user-search-loader.js"></script>

@@ -52,6 +52,10 @@
   margin: 10px;
 }
 
+#name-container {
+  margin-top: 20px;
+}
+
 #about-me-container {
   font-family: "Helvetica";
   text-align: center;
