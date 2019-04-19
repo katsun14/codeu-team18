@@ -7,6 +7,8 @@ google.charts.setOnLoadCallback(fetchMessageData);
 
 google.charts.setOnLoadCallback(fetchSentimentData);
 
+google.charts.setOnLoadCallback(fetchGeoData);
+
 function drawMedalChart() {
   var medal_data = new google.visualization.DataTable();
 
@@ -140,5 +142,70 @@ function fetchSentimentData() {
                   }
                 //console.log(msgData);
                 drawSentimentChart(msgData);
+              });
+}
+
+function drawGeoChart(usrData) {
+  
+  var geo_chart = new google.visualization.GeoChart(document.getElementById('geo_chart'));
+
+  var geo_chart_options = {
+    title: "Users in Each Country",
+    height: 450,
+    width: 900
+  };
+
+  geo_chart.draw(usrData, geo_chart_options);
+}
+
+function fetchGeoData() {
+  fetch("/geochart")
+  .then((response) => {
+    return response.json();
+  })
+  .then((usrJson) => {
+    var usrData = new google.visualization.DataTable();
+                //define columns for the DataTable instance
+                usrData.addColumn('string', 'Country of Origin');
+                usrData.addColumn('number', 'Number of Users');
+
+                var count = 1;
+                var actualCountry = usrJson[0].country;
+                if (actualCountry == "US" || actualCountry == "U.S." ||
+                  actualCountry == "USA" || actualCountry == "U.S.A" || actualCountry == "U.S.A." ||
+                  actualCountry == "United States of America"){
+                  actualCountry = "United States";
+                }
+                var country = actualCountry;
+                var flag = false;
+                for (i = 1; i < usrJson.length; i++) {
+                  var actualCountry = usrJson[i].country;
+                  if (actualCountry == "US" || actualCountry == "U.S." ||
+                    actualCountry == "USA" || actualCountry == "U.S.A" || actualCountry == "U.S.A." ||
+                    actualCountry == "United States of America"){
+                    actualCountry = "United States";
+                  }
+                  if (actualCountry != country){
+                    usrRow = [];
+                    usrRow.push(country, count);
+                    usrData.addRow(usrRow);
+                    console.log(country);
+                    console.log(count);
+                    flag = true;
+                    count = 1;
+                    country = actualCountry;
+                  } else{
+                    count = count + 1;
+                    flag = false;
+                  }
+
+                }
+                usrRow = [];
+                usrRow.push(country, count);
+                usrData.addRow(usrRow);
+                console.log(country);
+                console.log(count);
+
+                drawGeoChart(usrData);
               });
 }
