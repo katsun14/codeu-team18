@@ -22,6 +22,7 @@ import com.google.codeu.data.Datastore;
 import com.google.codeu.data.User;
 import com.google.gson.Gson;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.List;
 import java.util.regex.*;
 import javax.servlet.annotation.WebServlet;
@@ -80,9 +81,27 @@ public class GeoChartServlet extends HttpServlet {
       response.sendRedirect("/index.html");
       return;
     }
+    String currentUserEmail = userService.getCurrentUser().getEmail();
 
     String searchUser = request.getParameter("search-user");
     User user = datastore.getUserByName(searchUser);
+    String redirect = "/user-page.html?user=" + currentUserEmail;
+
+    if (user == null) {
+      // getServletContext().getRequestDispatcher("/user-page.html?user=" +
+      // currentUserEmail).forward(request, response);
+      response.setContentType("text/html;charset=UTF-8");
+      PrintWriter out = response.getWriter();
+      out.println("<html><head>");
+      out.println("<script type=\'text/javascript\'>");
+      out.println(
+          "alert(\'There is no user with this name. Please try again.\'); window.location.href = \""
+              + redirect
+              + "\"; </script>");
+      out.println("</head><body></body></html>");
+      // response.sendRedirect("/user-page.html?user=" + currentUserEmail);
+      return;
+    }
 
     response.sendRedirect("/user-page.html?user=" + user.getEmail());
   }
