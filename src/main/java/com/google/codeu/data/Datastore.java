@@ -194,6 +194,25 @@ public class Datastore {
     return user;
   }
 
+  public User getUserByName(String name) {
+
+    Query query =
+        new Query(userColumn)
+            .setFilter(new Query.FilterPredicate("name", FilterOperator.EQUAL, name));
+    PreparedQuery results = datastore.prepare(query);
+    Entity userEntity = results.asSingleEntity();
+    if (userEntity == null) {
+      return null;
+    }
+
+    String aboutMe = (String) userEntity.getProperty("aboutMe");
+    String email = (String) userEntity.getProperty("email");
+    String country = (String) userEntity.getProperty("country");
+    User user = new User(email, aboutMe, name, country);
+
+    return user;
+  }
+
   /** Retrieves messages for a specified query. */
   public List<User> answerUserQuery(Query query) {
     List<User> users = new ArrayList<>();
