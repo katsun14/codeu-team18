@@ -10,7 +10,19 @@
   color: rgb(119, 88, 8);
 }
 
-.message-div {
+#events-input {
+  height: 100px;
+  width: 100%;
+  margin-top:10px;
+}
+
+#events-form {
+  text-align: center;
+  font-family: "Helvetica";
+  margin-top: 20px;
+}
+
+.events-div {
   border: thin solid black;
   border-radius: 0;
   margin-top: 30px;
@@ -18,21 +30,30 @@
   background-color:white;
 }
 
-/* Add a bottom border to the message header. */
-.message-header {
+/* Add a bottom border to the events header. */
+.events-header {
   border-bottom: thin solid black;
   padding: 5px;
   background-color:goldenrod;
 }
 
-/* Give the message body a margin so the text
+/* Give the events body a margin so the text
    isn't too close to the border. */
-.message-body {
-  margin: 10px;
+.events-body {
+  margin-top: 10px;
+  margin-bottom: 10px;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
-.message-entity {
+.events-entity {
   padding: 5px;
   border-bottom: thin solid black;
   background-color:lightskyblue;
+}
+
+/* Use this to hide certain elements like forms if the
+   user is not logged in or viewing their own page. */
+.hidden {
+  display: none;
 }
