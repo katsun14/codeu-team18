@@ -18,33 +18,44 @@ package com.google.codeu.data;
 
 import java.util.UUID;
 
-/** A single message posted by a user. */
-public class Message {
+/** A single event posted by a user. */
+public class Event {
 
   private UUID id;
   private String user;
   private String text;
   private long timestamp;
-  private String recipient;
   private float sentimentScore;
   private String entityInformation;
+  // private String[] entities;
 
   /**
    * Constructs a new {@link Message} posted by {@code user} to {@code recipient} with {@code text}
    * content. Generates a random ID and uses the current system time for the creation time.
    */
-  public Message(String user, String text, String recipient, float sentimentScore) {
-    this(UUID.randomUUID(), user, text, System.currentTimeMillis(), recipient, sentimentScore);
+  public Event(String user, String text, float sentimentScore, String entityInformation) {
+    this(
+        UUID.randomUUID(),
+        user,
+        text,
+        System.currentTimeMillis(),
+        sentimentScore,
+        entityInformation);
   }
 
-  public Message(
-      UUID id, String user, String text, long timestamp, String recipient, float sentimentScore) {
+  public Event(
+      UUID id,
+      String user,
+      String text,
+      long timestamp,
+      float sentimentScore,
+      String entityInformation) {
     this.id = id;
     this.user = user;
     this.text = text;
     this.timestamp = timestamp;
-    this.recipient = recipient;
     this.sentimentScore = sentimentScore;
+    this.entityInformation = entityInformation;
   }
 
   public UUID getId() {
@@ -65,10 +76,6 @@ public class Message {
 
   public long getTimestamp() {
     return timestamp;
-  }
-
-  public String getRecipient() {
-    return recipient;
   }
 
   public float getSentimentScore() {

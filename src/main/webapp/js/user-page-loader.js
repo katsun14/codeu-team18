@@ -134,7 +134,7 @@ function buildMessageDiv(message) {
 
   var messageHeader = 'From: ' + message.user +
   					' To: ' + message.recipient +
-  					' - ' + new Date(message.timestamp) + ' [' + message.sentimentScore + ']';
+  					' - ' + new Date(message.timestamp) + ' [Sentiment: ' + message.sentimentScore + ']';
 
   headerDiv.appendChild(document.createTextNode(messageHeader));
 
