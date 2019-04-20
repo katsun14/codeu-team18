@@ -2,10 +2,6 @@ package com.google.codeu.servlets;
 
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
-import com.google.cloud.translate.Translate;
-import com.google.cloud.translate.Translate.TranslateOption;
-import com.google.cloud.translate.TranslateOptions;
-import com.google.cloud.translate.Translation;
 import com.google.codeu.data.Datastore;
 import com.google.codeu.data.User;
 import java.io.IOException;
@@ -15,8 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /** Handles fetching and saving user's name. */
-@WebServlet("/name")
-public class NameServlet extends HttpServlet {
+@WebServlet("/settings")
+public class SettingsServlet extends HttpServlet {
 
   private Datastore datastore;
 
@@ -28,11 +24,15 @@ public class NameServlet extends HttpServlet {
   /** Responds with the "name" section for a particular user. */
   @Override
   public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
     response.setContentType("text/html");
 
-    String user = request.getParameter("user");
-    String targetLanguageCode = request.getParameter("language");
+    UserService userService = UserServiceFactory.getUserService();
+    if (!userService.isUserLoggedIn()) {
+      response.sendRedirect("/index.html");
+      return;
+    }
+
+    String user = userService.getCurrentUser().getEmail();
 
     if (user == null || user.equals("")) {
       // Request is invalid, return empty response
@@ -41,21 +41,16 @@ public class NameServlet extends HttpServlet {
 
     User userData = datastore.getUser(user);
 
-    if (userData == null || userData.getName() == null) {
+    if (userData == null || userData.getLanguage() == null) {
       return;
     }
 
-    String text = userData.getName();
-
-    if (targetLanguageCode != null) {
-      text = translateText(text, targetLanguageCode);
-    }
-
-    response.getWriter().println(text);
+    response.getOutputStream().println(userData.getLanguage());
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    response.setContentType("text/html");
 
     UserService userService = UserServiceFactory.getUserService();
     if (!userService.isUserLoggedIn()) {
@@ -63,28 +58,22 @@ public class NameServlet extends HttpServlet {
       return;
     }
 
-    String userEmail = userService.getCurrentUser().getEmail();
-
-    User user = datastore.getUser(userEmail);
-    if (user == null) user = new User(userEmail, "", "", "", "");
-
-    user.setName(request.getParameter("name"));
-    datastore.storeUser(user);
-
-    response.sendRedirect("/user-page.html?user=" + userEmail);
-  }
-
-  public String translateText(String text, String targetLanguageCode) {
-    Translate translate = TranslateOptions.getDefaultInstance().getService();
-
-    Translation translation =
-        translate.translate(text, TranslateOption.targetLanguage(targetLanguageCode));
-    String translatedText = translation.getTranslatedText();
-
-    if (translatedText != null) {
-      text = translatedText;
+    String update = request.getParameter("language");
+    if (update == null || update.equals("")) {
+      return;
     }
 
-    return text;
+    String userEmail = userService.getCurrentUser().getEmail();
+    User user = datastore.getUser(userEmail);
+
+    if (user == null) {
+      user = new User(userEmail, "", "", "", "");
+    }
+
+    user.setLanguage(update);
+
+    datastore.storeUser(user);
+
+    response.getOutputStream().println("Success");
   }
 }

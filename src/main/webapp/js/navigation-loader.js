@@ -71,6 +71,7 @@ function loadNavBar() {
   addBasicLinkNavigation('user-map.html', 'Maps');
   addBasicLinkNavigation('stats.html', 'Stats Page');
   addBasicLinkNavigation('events.html', 'Events Page');
+  addBasicLinkNavigation('user-settings.html', 'User Settings');
 }
 
 

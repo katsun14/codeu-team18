@@ -20,6 +20,7 @@ const parameterUsername = urlParams.get('user');
 const maxMessages = 5;
 //HashMap to map supported languages and their language codes
 var supportedLanguages = new Map();
+var defaultLanguage;
 
 // URL must include ?user=XYZ parameter. If not, redirect to homepage.
 if (!parameterUsername) {
@@ -35,6 +36,19 @@ function fillMap() {
   supportedLanguages.set('hi', 'Hindi');
   supportedLanguages.set('es', 'Spanish');
   supportedLanguages.set('ar', 'Arabic');
+}
+
+
+function fetchLanguage() {
+  const url = '/settings';
+  fetch(url)
+    .then((response) => {
+      return response.text()
+    })
+    .then((language) => {
+        defaultLanguage = language;
+        console.log(defaultLanguage);
+    }) 
 }
 
 
@@ -68,13 +82,14 @@ function showMessageFormIfViewingSelf() {
 
 /** Fetches messages and add them to the page. */
 function fetchMessages() {
-  const parameterLanguage = urlParams.get('language');
   let url = '/messages?user=' + parameterUsername;
 
-  if (parameterLanguage && 
-    supportedLanguages.has(parameterLanguage)) {
+  const parameterLanguage = defaultLanguage;
+  if (parameterLanguage) {
     url += '&language=' + parameterLanguage;
   }
+
+  console.log(url);
 
   fetch(url)
       .then((response) => {
@@ -151,7 +166,13 @@ function buildMessageDiv(message) {
 }
 
 function fetchAboutMe(){
-  const url = '/about?user=' + parameterUsername;
+  console.log('About me');
+  let url = '/about?user=' + parameterUsername;
+  const parameterLanguage = defaultLanguage;
+  if (parameterLanguage) {
+    url += '&language=' + parameterLanguage;
+  }
+
   fetch(url).then((response) => {
     return response.text();
   }).then((aboutMe) => {
@@ -166,7 +187,12 @@ function fetchAboutMe(){
 }
 
 function fetchName(){
-  const url = '/name?user=' + parameterUsername;
+  let url = '/name?user=' + parameterUsername;
+  const parameterLanguage = defaultLanguage;
+  if (parameterLanguage) {
+    url += '&language=' + parameterLanguage;
+  }
+
   fetch(url).then((response) => {
     return response.text();
   }).then((name) => {
@@ -181,7 +207,12 @@ function fetchName(){
 }
 
 function fetchCountry(){
-  const url = '/country?user=' + parameterUsername;
+  let url = '/country?user=' + parameterUsername;
+  const parameterLanguage = defaultLanguage;
+  if (parameterLanguage) {
+    url += '&language=' + parameterLanguage;
+  }
+
   fetch(url).then((response) => {
     return response.text();
   }).then((country) => {
@@ -212,15 +243,34 @@ function buildLanguageLinks() {
 }
 
 
+/*
+ *  Description: This function handles calling all functions that fetch
+ *  user information to be displayed on page.
+ * 
+ *  Since JavaScript is single threaded,
+ *  we must wait for user's default language to be 
+ *  fetched from user's settings
+ *
+ */
+
+function getInfo() {
+  if (!defaultLanguage) {
+    window.setTimeout(getInfo, 100);
+  } else {
+    fetchMessages();
+    fetchName();
+    fetchCountry();
+    fetchAboutMe();
+  }
+}
+
 
 /** Fetches data and populates the UI of the page. */
 function buildUI() {
   setPageTitle();
   showMessageFormIfViewingSelf();
   fillMap();
-  fetchMessages();
-  fetchName();
-  fetchCountry();
-  fetchAboutMe();
-  buildLanguageLinks();
+  fetchLanguage();
+  getInfo();
+//  buildLanguageLinks();
 }

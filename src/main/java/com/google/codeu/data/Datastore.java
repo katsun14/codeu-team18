@@ -171,6 +171,7 @@ public class Datastore {
     userEntity.setProperty("aboutMe", user.getAboutMe());
     userEntity.setProperty("name", user.getName());
     userEntity.setProperty("country", user.getCountry());
+    userEntity.setProperty("language", user.getLanguage());
     datastore.put(userEntity);
   }
 
@@ -189,7 +190,8 @@ public class Datastore {
     String aboutMe = (String) userEntity.getProperty("aboutMe");
     String name = (String) userEntity.getProperty("name");
     String country = (String) userEntity.getProperty("country");
-    User user = new User(email, aboutMe, name, country);
+    String language = (String) userEntity.getProperty("language");
+    User user = new User(email, aboutMe, name, country, language);
 
     return user;
   }
@@ -231,8 +233,12 @@ public class Datastore {
             entity.getProperty("country") == null
                 ? "Unknown Country"
                 : ((String) entity.getProperty("country"));
+        String language =
+            entity.getProperty("language") == null
+                ? "en"
+                : ((String) entity.getProperty("language"));
 
-        User user = new User(email, aboutMe, name, country);
+        User user = new User(email, aboutMe, name, country, language);
         users.add(user);
       } catch (Exception e) {
         System.err.println("Error reading user.");
