@@ -38,6 +38,7 @@ public class Datastore {
   private String timestampColumn = "timestamp";
   private String recipientColumn = "recipient";
   private String sentimentScoreColumn = "sentimentScore";
+  private String entityInformationColumn = "entityInformation";
 
   public Datastore() {
     datastore = DatastoreServiceFactory.getDatastoreService();
@@ -195,6 +196,25 @@ public class Datastore {
     return user;
   }
 
+  public User getUserByName(String name) {
+
+    Query query =
+        new Query(userColumn)
+            .setFilter(new Query.FilterPredicate("name", FilterOperator.EQUAL, name));
+    PreparedQuery results = datastore.prepare(query);
+    Entity userEntity = results.asSingleEntity();
+    if (userEntity == null) {
+      return null;
+    }
+
+    String aboutMe = (String) userEntity.getProperty("aboutMe");
+    String email = (String) userEntity.getProperty("email");
+    String country = (String) userEntity.getProperty("country");
+    User user = new User(email, aboutMe, name, country);
+
+    return user;
+  }
+
   /** Retrieves messages for a specified query. */
   public List<User> answerUserQuery(Query query) {
     List<User> users = new ArrayList<>();
@@ -266,5 +286,61 @@ public class Datastore {
     markerEntity.setProperty("lng", marker.getLng());
     markerEntity.setProperty("content", marker.getContent());
     datastore.put(markerEntity);
+  }
+
+  /** Stores the Event in Datastore. */
+  public void storeEvent(Event event) {
+    Entity eventEntity = new Entity("Event", event.getId().toString());
+    eventEntity.setProperty(userColumn, event.getUser());
+    eventEntity.setProperty(textColumn, event.getText());
+    eventEntity.setProperty(timestampColumn, event.getTimestamp());
+    eventEntity.setProperty(sentimentScoreColumn, event.getSentimentScore());
+    eventEntity.setProperty(entityInformationColumn, event.getEntityInformation());
+
+    datastore.put(eventEntity);
+  }
+
+  /** Retrieves events for a specified query. */
+  public List<Event> answerEventQuery(Query query) {
+    List<Event> events = new ArrayList<>();
+
+    PreparedQuery results = datastore.prepare(query);
+
+    for (Entity entity : results.asIterable()) {
+      try {
+        String idString = entity.getKey().getName();
+        UUID id = UUID.fromString(idString);
+        String user = (String) entity.getProperty(userColumn);
+        String text = (String) entity.getProperty(textColumn);
+        long timestamp = (long) entity.getProperty(timestampColumn);
+        float sentimentScore =
+            entity.getProperty(sentimentScoreColumn) == null
+                ? (float) 0.0
+                : ((Double) entity.getProperty(sentimentScoreColumn)).floatValue();
+        String entityInformation = (String) entity.getProperty(entityInformationColumn);
+
+        Event event = new Event(id, user, text, timestamp, sentimentScore, entityInformation);
+        events.add(event);
+      } catch (Exception e) {
+        System.err.println("Error reading event.");
+        System.err.println(entity.toString());
+        e.printStackTrace();
+      }
+    }
+
+    return events;
+  }
+
+  /**
+   * Gets events posted by all users.
+   *
+   * @return a list of events posted by all users, or empty list if users have never posted a event.
+   *     List is sorted by time descending.
+   */
+  public List<Event> getAllEvents() {
+
+    Query query = new Query("Event").addSort(timestampColumn, SortDirection.DESCENDING);
+
+    return answerEventQuery(query);
   }
 }

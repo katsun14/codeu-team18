@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Events</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/events-page.css">
+  <script src="/js/events-loader.js"></script>
+  <script src="/js/navigation-loader.js"></script>
+</head>
+
+<body onload="buildUI(); loadNavBar();">
+  <nav>
+    <ul id="navigation">
+      <li><a href="/">Home</a></li>
+      <li class="dropdown">
+        <a href="javascript:void(0)" class="dropbtn">More</a>
+        <ul class="dropdown-content" id="dropdown-content"></ul>
+      </li>
+    </ul>
+    <ul id="languages"></ul>
+  </nav>
+  <h1 id="page-title">Events Page</h1>
+
+  <form id="events-form" action="/events" method="POST" class="hidden">
+    Post about an event! It will automatically be tagged with any events you mention, such as "Olympics 2020."
+    <br />
+    <textarea name="text" id="events-input"></textarea>
+    <br />
+    <input type="submit" value="Submit">
+  </form>
+  <hr />
+
+  <div>
+    <div id="events-container">Loading...</div>
+    <button type="button" onclick="showAll()">Collapse Posts</button>
+    <button type="button" onclick="hideMessages();">Hide Posts</button>
+  </div>
+
+</body>
+
+</html>
