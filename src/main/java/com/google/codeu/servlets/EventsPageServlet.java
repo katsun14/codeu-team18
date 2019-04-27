@@ -64,7 +64,7 @@ public class EventsPageServlet extends HttpServlet {
     Gson gson = new Gson();
     String json = gson.toJson(events);
 
-    response.getOutputStream().println(json);
+    response.getWriter().println(json);
   }
 
   /** Stores a new {@link Event}. */

@@ -2,6 +2,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const maxMessages = 5;
 //HashMap to map supported languages and their language codes
 var supportedLanguages = new Map();
+var defaultLanguage;
 
 
 /*
@@ -38,15 +39,30 @@ function showMessageFormIfViewingSelf() {
       });
 }
 
+
+function fetchLanguage() {
+  const url = '/settings';
+  fetch(url)
+    .then((response) => {
+      return response.text()
+    })
+    .then((language) => {
+        defaultLanguage = language;
+        console.log(defaultLanguage);
+    }) 
+}
+
+
 /** Fetches messages and add them to the page. */
 function fetchMessages() {
-  const parameterLanguage = urlParams.get('language');
   let url = '/events';
 
-  if (parameterLanguage && 
-    supportedLanguages.has(parameterLanguage)) {
-    url += '&language=' + parameterLanguage;
+  const parameterLanguage = defaultLanguage;
+  if (parameterLanguage) {
+    url += '?language=' + parameterLanguage;
   }
+
+  console.log(url);
 
   fetch(url)
       .then((response) => {
@@ -153,12 +169,30 @@ function buildLanguageLinks() {
 }
 
 
+/*
+ *  Description: This function handles calling all functions that fetch
+ *  user information to be displayed on page.
+ * 
+ *  Since JavaScript is single threaded,
+ *  we must wait for user's default language to be 
+ *  fetched from user's settings
+ *
+ */
+function getInfo() {
+  if (!defaultLanguage) {
+    window.setTimeout(getInfo, 100);
+  } else {
+    fetchMessages();
+  }
+}
+
 
 /** Fetches data and populates the UI of the page. */
 function buildUI() {
   setPageTitle();
   showMessageFormIfViewingSelf();
-  fillMap();
-  fetchMessages();
-  buildLanguageLinks();
+//  fillMap();
+  fetchLanguage();
+  getInfo();
+//  buildLanguageLinks();
 }
