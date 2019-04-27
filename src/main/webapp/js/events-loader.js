@@ -111,10 +111,10 @@ function buildMessageDiv(event) {
 
   const headerDiv = document.createElement('div');
   headerDiv.classList.add('events-header');
-  var messageHeader = 'From: ' + event.user +
-            ' - ' + new Date(event.timestamp) + ' [Sentiment: ' + event.sentimentScore + ']';
-
-  headerDiv.appendChild(document.createTextNode(messageHeader));
+  var messageHeader = 
+    'From: <a href="/user-page.html?user=' + event.user + '">' + event.user + '</a>' +
+    ' - ' + new Date(event.timestamp) + ' [Sentiment: ' + event.sentimentScore + ']';
+  headerDiv.innerHTML = messageHeader;
 
   // const bodyDiv = document.createElement('div');
   // bodyDiv.classList.add('message-body');
