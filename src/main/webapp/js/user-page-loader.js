@@ -147,11 +147,15 @@ function buildMessageDiv(message) {
   const headerDiv = document.createElement('div');
   headerDiv.classList.add('message-header');
 
-  var messageHeader = 'From: ' + message.user +
-  					' To: ' + message.recipient +
-  					' - ' + new Date(message.timestamp) + ' [Sentiment: ' + message.sentimentScore + ']';
+  let user = message.user;
+  let recipient = message.recipient;
 
-  headerDiv.appendChild(document.createTextNode(messageHeader));
+  var messageHeader = 
+    'From: <a href="/user-page.html?user=' + user + '">' + user + '</a>' +
+  	' To: <a href="/user-page.html?user=' + recipient + '">' + recipient + '</a>' +
+  	' - ' + new Date(message.timestamp) + ' [Sentiment: ' + message.sentimentScore + ']';
+
+  headerDiv.innerHTML = messageHeader;
 
   const bodyDiv = document.createElement('div');
   bodyDiv.classList.add('message-body');

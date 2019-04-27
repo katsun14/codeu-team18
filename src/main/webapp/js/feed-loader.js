@@ -21,7 +21,8 @@ function fetchMessages() {
 function buildMessageDiv(message) {
   const usernameDiv = document.createElement('div');
   usernameDiv.classList.add("email-header");
-  usernameDiv.appendChild(document.createTextNode(message.user));
+  usernameDiv.innerHTML = 
+    '<a href="/user-page.html?user=' + message.user + '">' + message.user + '</a>';
 
   const timeDiv = document.createElement('div');
   timeDiv.classList.add('info-header');
