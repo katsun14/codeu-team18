@@ -42,7 +42,8 @@ public class SettingsServlet extends HttpServlet {
     User userData = datastore.getUser(user);
 
     if (userData == null || userData.getLanguage() == null) {
-      return;
+      userData = new User(user, "", "", "", "en");
+      datastore.storeUser(userData);
     }
 
     response.getOutputStream().println(userData.getLanguage());
@@ -67,7 +68,7 @@ public class SettingsServlet extends HttpServlet {
     User user = datastore.getUser(userEmail);
 
     if (user == null) {
-      user = new User(userEmail, "", "", "", "");
+      user = new User(userEmail, "", "", "", "en");
     }
 
     user.setLanguage(update);
