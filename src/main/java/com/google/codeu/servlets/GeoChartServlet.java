@@ -85,6 +85,9 @@ public class GeoChartServlet extends HttpServlet {
 
     String searchUser = request.getParameter("search-user");
     User user = datastore.getUserByName(searchUser);
+    if (user == null) {
+      user = datastore.getUser(searchUser);
+    }
     String redirect = "/user-page.html?user=" + currentUserEmail;
 
     if (user == null) {
