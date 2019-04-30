@@ -10,6 +10,7 @@ void function () {
       var names = [];
       for (var i = 0; i < usrJson.length; i++) {
         names.push(usrJson[i].name);
+        names.push(usrJson[i].email);
       }
       callback(names);
     });
